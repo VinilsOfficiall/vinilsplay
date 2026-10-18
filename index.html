@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VinilsPlay Arcade - Free Online Browser Games & Monetized Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Adsterra Social Bar Script -->
+    <script type="text/javascript" src="https://pl31772013.profitableratecpmnetwork.com/2e/52/64/2e5264cde94f94df88e156b29f9afcfe.js"></script>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        .poki-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            grid-auto-rows: 150px;
+            grid-auto-flow: dense;
+            gap: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .poki-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                grid-auto-rows: 180px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .poki-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                grid-auto-rows: 200px;
+            }
+        }
+
+        .card-2x2 { grid-column: span 2; grid-row: span 2; }
+        .card-2x1 { grid-column: span 2; grid-row: span 1; }
+        .card-1x2 { grid-column: span 1; grid-row: span 2; }
+        .card-1x1 { grid-column: span 1; grid-row: span 1; }
+
+        @media (max-width: 480px) {
+            .poki-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-auto-rows: 160px;
+                gap: 12px;
+            }
+            .card-2x2 { grid-column: span 2; grid-row: span 2; }
+            .card-2x1 { grid-column: span 2; grid-row: span 1; }
+            .card-1x2 { grid-column: span 1; grid-row: span 2; }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-indigo-600 selection:text-white">
+
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <a href="#" onclick="goHome(); return false;" class="flex items-center gap-3 group shrink-0">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-indigo-200 group-hover:scale-105 transition-transform duration-200">
+                    V
+                </div>
+                <div class="hidden sm:block">
+                    <span class="text-2xl font-black tracking-tight text-slate-900">Vinils<span class="text-indigo-600">Play</span></span>
+                    <span class="block text-[10px] font-bold uppercase tracking-widest text-slate-400 -mt-1">Monetized HTML5 Arcade</span>
+                </div>
+            </a>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-xl relative">
+                <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                </span>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search Tube Blast, City Rider, Racing..." 
+                    class="w-full pl-11 pr-10 py-3 bg-slate-100/80 border border-slate-200/80 rounded-2xl text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:bg-white focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 transition-all">
+                <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Header Quick Actions & Ad Rewards -->
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button onclick="triggerAdsterraReward()" class="hidden md:flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs sm:text-sm shadow-md shadow-amber-200 transition-all">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Ad Bonus</span>
+                </button>
+                <button onclick="openAddGameModal()" class="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs sm:text-sm shadow-md shadow-indigo-200 transition-all">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>Add Game</span>
+                </button>
+                <button onclick="toggleFavoritesFilter()" id="favoritesNavBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all">
+                    <i class="fa-solid fa-heart text-rose-500"></i>
+                    <span class="hidden md:inline">Favorites</span>
+                    <span id="favCountBadge" class="bg-indigo-600 text-white text-[11px] font-black px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6">
+
+        <!-- Top Header Ad Banners (Adsterra 728x90, 468x60, 320x50 slots) -->
+        <div class="w-full flex flex-col items-center gap-4 mb-6">
+            
+            <!-- 728x90 Banner Slot -->
+            <div class="w-full max-w-[728px] bg-white border border-slate-200 rounded-2xl p-2.5 shadow-xs flex flex-col items-center justify-center relative overflow-hidden min-h-[90px]">
+                <span class="absolute top-1 right-2 text-[9px] font-bold uppercase tracking-wider text-slate-400 z-10">Banner 728x90</span>
+                <div class="w-full max-w-[728px] min-h-[90px] flex items-center justify-center overflow-hidden relative bg-slate-50 rounded-xl">
+                    <script type="text/javascript">
+                        atOptions = {
+                            'key' : 'c0982dcbb8400ff710bb0450fb2c64f8',
+                            'format' : 'iframe',
+                            'height' : 90,
+                            'width' : 728,
+                            'params' : {}
+                        };
+                    </script>
+                    <script type="text/javascript" src="https://www.highrevenueformat.com/c0982dcbb8400ff710bb0450fb2c64f8/invoke.js"></script>
+                </div>
+            </div>
+
+            <!-- 468x60 & 320x50 Responsive Banners Row -->
+            <div class="flex flex-wrap items-center justify-center gap-4 w-full">
+                <!-- 468x60 Slot -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-2 shadow-xs flex flex-col items-center relative overflow-hidden">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Banner 468x60</span>
+                    <div class="w-[468px] max-w-full h-[60px] flex items-center justify-center overflow-hidden bg-slate-50 rounded-xl">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : 'd48f302c79dc7f3982f7d5c94a73f55b',
+                                'format' : 'iframe',
+                                'height' : 60,
+                                'width' : 468,
+                                'params' : {}
+                            };
+                        </script>
+                        <script type="text/javascript" src="https://www.highrevenueformat.com/d48f302c79dc7f3982f7d5c94a73f55b/invoke.js"></script>
+                    </div>
+                </div>
+
+                <!-- 320x50 Slot -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-2 shadow-xs flex flex-col items-center relative overflow-hidden">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-slate-400 mb-1">Banner 320x50</span>
+                    <div class="w-[320px] max-w-full h-[50px] flex items-center justify-center overflow-hidden bg-slate-50 rounded-xl">
+                        <script type="text/javascript">
+                            atOptions = {
+                                'key' : '69c518226e31e96c5ce70d854512b68f',
+                                'format' : 'iframe',
+                                'height' : 50,
+                                'width' : 320,
+                                'params' : {}
+                            };
+                        </script>
+                        <script type="text/javascript" src="https://www.highrevenueformat.com/69c518226e31e96c5ce70d854512b68f/invoke.js"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-4 scrollbar-none" id="categoriesBar">
+            <button onclick="filterCategory('All')" class="category-btn active px-5 py-2.5 rounded-2xl text-xs font-black bg-indigo-600 text-white shadow-md shadow-indigo-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-gamepad"></i> All Games
+            </button>
+            <button onclick="filterCategory('Featured')" class="category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-fire text-amber-500"></i> Featured & Hot
+            </button>
+            <button onclick="filterCategory('Racing')" class="category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-car-side text-blue-500"></i> Racing
+            </button>
+            <button onclick="filterCategory('Action')" class="category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-amber-500"></i> Action
+            </button>
+            <button onclick="filterCategory('Puzzle')" class="category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-brain text-purple-500"></i> Puzzle
+            </button>
+            <button onclick="filterCategory('Arcade')" class="category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2">
+                <i class="fa-solid fa-ghost text-rose-500"></i> Arcade
+            </button>
+        </div>
+
+        <div id="homeView">
+            <div id="pokiGrid" class="poki-grid">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </div>
+
+        <div id="gameView" class="hidden">
+            
+            <!-- Navigation Back & Share -->
+            <div class="flex items-center justify-between mb-4">
+                <button onclick="goHome()" class="flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-800 font-extrabold text-sm shadow-xs transition-all hover:-translate-x-1">
+                    <i class="fa-solid fa-arrow-left text-indigo-600"></i> Back to All Games
+                </button>
+
+                <div class="flex items-center gap-3">
+                    <button id="likeBtn" onclick="toggleCurrentFavorite()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-all">
+                        <i class="fa-regular fa-heart text-rose-500 text-base" id="likeIcon"></i>
+                        <span id="likeText">Favorite</span>
+                    </button>
+                    <button onclick="shareGame()" class="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white border border-slate-200 text-slate-700 font-bold text-xs sm:text-sm hover:bg-slate-50 transition-all">
+                        <i class="fa-solid fa-share-nodes text-indigo-600"></i>
+                        <span class="hidden sm:inline">Share</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Layout with Sidebar Ad Units -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- Game Player Frame (9 cols) -->
+                <div class="lg:col-span-9 flex flex-col gap-6">
+                    
+                    <!-- Game Container Wrapper -->
+                    <div id="gameContainerWrapper" class="relative w-full aspect-[16/9] bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex items-center justify-center">
+                        <iframe id="gameIframe" src="about:blank" class="w-full h-full border-0 block" allowfullscreen allow="autoplay; gamepad; keyboard"></iframe>
+
+                        <!-- Pre-Game Play Overlay -->
+                        <div id="gameOverlay" class="absolute inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center z-20">
+                            <div id="overlayBgIcon" class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white text-4xl shadow-2xl shadow-indigo-500/30 mb-5 animate-pulse">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <h2 id="overlayTitle" class="text-3xl sm:text-4xl font-black text-white mb-2 tracking-tight">Tube Blast</h2>
+                            <p id="overlayCategory" class="text-indigo-400 font-bold text-xs sm:text-sm uppercase tracking-widest mb-6">Featured • HTML5 Game</p>
+                            
+                            <button onclick="launchGameIframe()" class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black rounded-2xl shadow-xl shadow-indigo-600/40 text-lg flex items-center gap-3 transition-transform hover:scale-105 active:scale-95">
+                                <i class="fa-solid fa-play text-xl"></i>
+                                <span>PLAY NOW</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Game Control Action Bar -->
+                    <div class="bg-white rounded-3xl p-5 border border-slate-200/80 shadow-xs flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                            <h2 id="gameTitleDisplay" class="text-2xl font-black text-slate-900 mb-1">Tube Blast</h2>
+                            <p id="gameCategoryDisplay" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Featured • Free Online Browser Game</p>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <button onclick="toggleFullscreen()" class="flex items-center gap-2 px-5 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-2xl shadow-md shadow-indigo-200 transition-all">
+                                <i class="fa-solid fa-expand"></i> Fullscreen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Game Description & Instructions -->
+                    <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-xs">
+                        <h3 class="text-lg font-black text-slate-900 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-info text-indigo-600"></i> About & Controls
+                        </h3>
+                        <p id="gameDescription" class="text-slate-600 text-sm leading-relaxed mb-4">
+                            Blast through vibrant energetic tube obstacles in this high-intensity arcade masterpiece. Test your reflexes!
+                        </p>
+                        <div class="flex flex-wrap gap-2" id="gameTagsContainer">
+                            <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">#TubeBlast</span>
+                            <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">#HTML5</span>
+                        </div>
+                    </div>
+
+                    <!-- Related Games Grid -->
+                    <div class="mt-4">
+                        <h3 class="text-xl font-black text-slate-900 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-fire text-amber-500"></i> More Games You Might Like
+                        </h3>
+                        <div id="relatedGamesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Sidebar Ad Units Column (300x250, 160x300, 160x600, Native Banner 1:1) -->
+                <div class="lg:col-span-3 flex flex-col gap-6">
+                    
+                    <!-- 300x250 Banner Slot -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col items-center relative overflow-hidden">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 self-start">Banner 300x250</span>
+                        <div class="w-[300px] h-[250px] bg-white rounded-2xl border border-slate-200 flex flex-col items-center justify-center p-3 relative overflow-hidden shadow-inner">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '8fe45cb5cf95f4277b64af5588828f80',
+                                    'format' : 'iframe',
+                                    'height' : 250,
+                                    'width' : 300,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="https://www.highrevenueformat.com/8fe45cb5cf95f4277b64af5588828f80/invoke.js"></script>
+                        </div>
+                    </div>
+
+                    <!-- 160x300 Banner Slot -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 self-start">Banner 160x300</span>
+                        <div class="w-[160px] h-[300px] bg-white rounded-2xl border border-slate-200 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '8dcbf34a7572d4014449fa257f60be82',
+                                    'format' : 'iframe',
+                                    'height' : 300,
+                                    'width' : 160,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="https://www.highrevenueformat.com/8dcbf34a7572d4014449fa257f60be82/invoke.js"></script>
+                        </div>
+                    </div>
+
+                    <!-- 160x600 Skyscraper Banner Slot -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 self-start">Banner 160x600</span>
+                        <div class="w-[160px] min-h-[600px] bg-white rounded-2xl border border-slate-200 flex flex-col items-center justify-center p-2 relative overflow-hidden">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '7da8cc28171885bffa327db923f04d0b',
+                                    'format' : 'iframe',
+                                    'height' : 600,
+                                    'width' : 160,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="https://www.highrevenueformat.com/7da8cc28171885bffa327db923f04d0b/invoke.js"></script>
+                        </div>
+                    </div>
+
+                    <!-- Native Banner 1:1 Slot -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200/80 shadow-xs flex flex-col items-center">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 mb-2 self-start">Native Banner 1:1</span>
+                        <div class="w-full bg-white rounded-2xl border border-slate-200 flex flex-col items-center justify-center p-3 relative overflow-hidden">
+                            <script async="async" data-cfasync="false" src="https://pl31772012.profitableratecpmnetwork.com/aeb198937a4cc38c06097b32df6bd399/invoke.js"></script>
+                            <div id="container-aeb198937a4cc38c06097b32df6bd399"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200/80 mt-16 py-10">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-base shadow-md">V</div>
+                <div>
+                    <span class="font-black text-slate-900 text-lg">VinilsPlay Arcade</span>
+                    <p class="text-xs text-slate-400 font-semibold">Instant HTML5 Browser Games featuring Tube Blast, City Rider & Adsterra</p>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-center gap-6 text-xs font-bold text-slate-500">
+                <a href="#" onclick="showNotice('Terms of Service: Free HTML5 arcade platform.'); return false;" class="hover:text-indigo-600 transition-colors">Terms</a>
+                <a href="#" onclick="showNotice('Privacy Policy: VinilsPlay complies with ad privacy standards.'); return false;" class="hover:text-indigo-600 transition-colors">Privacy</a>
+                <a href="#" onclick="showNotice('Ad Partnerships: Contact publisher@vinilsplay.com'); return false;" class="hover:text-indigo-600 transition-colors">Ad Partnerships</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Game Modal -->
+    <div id="addGameModal" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-slate-100 text-left">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-slate-900">Add New Game Easily</h3>
+                        <p class="text-xs text-slate-500 font-semibold">Instantly add Tube Blast, City Rider or any HTML5 game</p>
+                    </div>
+                </div>
+                <button onclick="closeAddGameModal()" class="text-slate-400 hover:text-slate-600 p-2 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleAddNewGame(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Game Title</label>
+                    <input type="text" id="newGameTitle" required placeholder="e.g. Tube Blast" class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Category</label>
+                        <select id="newGameCategory" class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                            <option value="Featured">Featured</option>
+                            <option value="Racing">Racing</option>
+                            <option value="Action">Action</option>
+                            <option value="Puzzle">Puzzle</option>
+                            <option value="Arcade">Arcade</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Grid Size (Poki Span)</label>
+                        <select id="newGameSpan" class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                            <option value="card-2x1">Wide (2x1)</option>
+                            <option value="card-1x1">Normal (1x1)</option>
+                            <option value="card-1x2">Tall (1x2)</option>
+                            <option value="card-2x2">Large Featured (2x2)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Game HTML File Path / URL</label>
+                    <input type="text" id="newGamePath" required placeholder="e.g. ./Tube Blast/index.html or https://..." class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Thumbnail Image Path / URL</label>
+                    <input type="text" id="newGameThumb" placeholder="e.g. ./Tube Blast/logo.png or image URL" class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-1">Short Description</label>
+                    <textarea id="newGameDesc" rows="2" placeholder="Briefly describe how to play..." class="w-full px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-sm font-semibold focus:outline-none focus:border-indigo-600 focus:bg-white transition-all"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl shadow-lg shadow-indigo-200 text-sm transition-all">
+                        <i class="fa-solid fa-plus mr-2"></i> Add Game to Arcade Now
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Custom Modal Box (No native alert) -->
+    <div id="customModal" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl border border-slate-100 text-center transform transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-info"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-slate-900 mb-2">VinilsPlay Notice</h3>
+            <p id="modalMessage" class="text-slate-600 text-sm mb-6 leading-relaxed">Notice text</p>
+            <button onclick="closeModal()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-md transition-all">Understood</button>
+        </div>
+    </div>
+
+    <script>
+        // Default Games List pre-including Tube Blast & City Rider with robust placeholders
+        const defaultGames = [
+            {
+                id: "tube-blast",
+                title: "Tube Blast",
+                category: "Featured",
+                badge: "★ TOP",
+                rating: 5.0,
+                plays: "4.2M",
+                spanClass: "card-2x2",
+                gradient: "from-indigo-600 via-purple-600 to-rose-600",
+                icon: "fa-rocket",
+                path: "./Tube Blast/index.html",
+                thumbnail: "https://placehold.co/600x400/7c3aed/ffffff?text=Tube+Blast",
+                description: "Blast through vibrant energetic tube obstacles in this high-intensity arcade masterpiece."
+            },
+            {
+                id: "city-rider",
+                title: "City Rider",
+                category: "Racing",
+                badge: "HOT",
+                rating: 4.9,
+                plays: "3.1M",
+                spanClass: "card-2x1",
+                gradient: "from-blue-600 via-indigo-600 to-violet-800",
+                icon: "fa-car-side",
+                path: "./City Rider/index.html",
+                thumbnail: "./City Rider/logo.png",
+                description: "Drive high-performance supercars through sprawling city streets in City Rider. Test your drift and racing skills!"
+            },
+            {
+                id: "neon-rider",
+                title: "Neon Rider 3D",
+                category: "Racing",
+                badge: "NEW",
+                rating: 4.8,
+                plays: "1.2M",
+                spanClass: "card-1x2",
+                gradient: "from-purple-600 to-indigo-900",
+                icon: "fa-car-tunnel",
+                path: "./game-1/index.html",
+                thumbnail: "https://placehold.co/400x600/4f46e5/ffffff?text=Neon+Rider",
+                description: "Experience extreme futuristic arcade racing on the neon grid."
+            },
+            {
+                id: "cyber-ninja",
+                title: "Cyber Slice Ninja",
+                category: "Action",
+                badge: "FAST",
+                rating: 4.7,
+                plays: "840K",
+                spanClass: "card-1x1",
+                gradient: "from-rose-500 to-red-700",
+                icon: "fa-khanda",
+                path: "./game-2/index.html",
+                thumbnail: "https://placehold.co/400x400/e11d48/ffffff?text=Cyber+Ninja",
+                description: "Slice through waves of rogue cybernetic bots in fast-paced reflex challenge."
+            },
+            {
+                id: "laser-maze",
+                title: "Laser Maze Master",
+                category: "Puzzle",
+                badge: "3D",
+                rating: 4.6,
+                plays: "520K",
+                spanClass: "card-1x1",
+                gradient: "from-amber-500 to-orange-600",
+                icon: "fa-brain",
+                path: "./game-3/index.html",
+                thumbnail: "https://placehold.co/400x400/d97706/ffffff?text=Laser+Maze",
+                description: "Reflect lasers, flip switches, and solve quantum grid puzzles."
+            },
+            {
+                id: "pixel-bounce",
+                title: "Pixel Bounce Pro",
+                category: "Arcade",
+                badge: "CLASSIC",
+                rating: 4.5,
+                plays: "950K",
+                spanClass: "card-1x1",
+                gradient: "from-emerald-500 to-teal-700",
+                icon: "fa-ghost",
+                path: "./game-4/index.html",
+                thumbnail: "https://placehold.co/400x400/059669/ffffff?text=Pixel+Bounce",
+                description: "Retro bouncy ball physics challenge built for quick arcade fun."
+            }
+        ];
+
+        let gamesList = JSON.parse(localStorage.getItem('vinilsplay_custom_games') || JSON.stringify(defaultGames));
+        let currentCategory = "All";
+        let favorites = JSON.parse(localStorage.getItem('vinilsplay_favs') || '[]');
+        let activeGame = null;
+
+        window.onload = function() {
+            updateFavBadge();
+            renderPokiGrid(gamesList);
+        };
+
+        function renderPokiGrid(games) {
+            const grid = document.getElementById('pokiGrid');
+            grid.innerHTML = '';
+
+            if (games.length === 0) {
+                grid.className = "w-full py-16 text-center text-slate-400 font-extrabold";
+                grid.innerHTML = `<i class="fa-solid fa-gamepad text-4xl mb-3 block"></i> No games found matching your criteria.`;
+                return;
+            } else {
+                grid.className = "poki-grid";
+            }
+
+            games.forEach((game) => {
+                const isFav = favorites.includes(game.id);
+                const card = document.createElement('div');
+                const spanClass = game.spanClass || 'card-1x1';
+                
+                card.className = `${spanClass} group relative rounded-3xl overflow-hidden bg-gradient-to-br ${game.gradient || 'from-indigo-600 to-violet-800'} p-4 text-white shadow-md hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between border border-white/20`;
+                
+                card.onclick = (e) => {
+                    if (e.target.closest('.fav-btn')) return;
+                    openGame(game.id);
+                };
+
+                const thumbSrc = game.thumbnail && game.thumbnail.trim() !== '' ? game.thumbnail : '';
+                const thumbnailHtml = thumbSrc ? `
+                    <img src="${thumbSrc}" alt="${game.title}" class="absolute inset-0 w-full h-full object-cover z-0 group-hover:scale-105 transition-transform duration-500" onerror="this.style.display='none'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/20 z-0"></div>
+                ` : '';
+
+                card.innerHTML = `
+                    ${thumbnailHtml}
+                    <div class="flex items-center justify-between z-10">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-black/40 backdrop-blur-md text-white border border-white/10">
+                            ${game.badge || game.category}
+                        </span>
+                        <button onclick="toggleFavorite(event, '${game.id}')" class="fav-btn w-8 h-8 rounded-full bg-black/30 hover:bg-black/60 backdrop-blur-md flex items-center justify-center text-white transition-all">
+                            <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
+                        </button>
+                    </div>
+
+                    <div class="my-auto flex flex-col items-center justify-center text-center p-2 z-10 ${thumbSrc ? 'opacity-0 group-hover:opacity-100 transition-opacity duration-300' : ''}">
+                        <i class="fa-solid ${game.icon || 'fa-gamepad'} text-4xl sm:text-5xl mb-2 drop-shadow-md group-hover:scale-110 transition-transform duration-300"></i>
+                    </div>
+
+                    <div class="z-10 bg-black/40 backdrop-blur-md -mx-4 -mb-4 p-3 border-t border-white/10 flex items-center justify-between">
+                        <div class="truncate mr-2">
+                            <h3 class="font-black text-xs sm:text-sm truncate leading-tight">${game.title}</h3>
+                            <span class="text-[10px] text-white/80 font-bold">${game.category}</span>
+                        </div>
+                        <div class="text-amber-300 font-black text-xs shrink-0 flex items-center gap-1">
+                            <i class="fa-solid fa-star text-[10px]"></i> ${game.rating || 4.8}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            const buttons = document.querySelectorAll('.category-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(category.toLowerCase())) {
+                    btn.className = "category-btn active px-5 py-2.5 rounded-2xl text-xs font-black bg-indigo-600 text-white shadow-md shadow-indigo-200 transition-all whitespace-nowrap flex items-center gap-2";
+                } else {
+                    btn.className = "category-btn px-5 py-2.5 rounded-2xl text-xs font-bold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all whitespace-nowrap flex items-center gap-2";
+                }
+            });
+            applyFilterAndSearch();
+        }
+
+        function handleSearch() {
+            const val = document.getElementById('searchInput').value;
+            const clearBtn = document.getElementById('clearSearchBtn');
+            if (val.length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+            applyFilterAndSearch();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('clearSearchBtn').classList.add('hidden');
+            applyFilterAndSearch();
+        }
+
+        function applyFilterAndSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            let filtered = gamesList;
+
+            if (currentCategory === 'Favorites') {
+                filtered = filtered.filter(g => favorites.includes(g.id));
+            } else if (currentCategory === 'Featured') {
+                filtered = filtered.filter(g => g.category === 'Featured' || g.badge?.includes('TOP'));
+            } else if (currentCategory !== 'All') {
+                filtered = filtered.filter(g => g.category.toLowerCase() === currentCategory.toLowerCase());
+            }
+
+            if (query !== '') {
+                filtered = filtered.filter(g => g.title.toLowerCase().includes(query) || g.description.toLowerCase().includes(query));
+            }
+
+            renderPokiGrid(filtered);
+        }
+
+        function toggleFavoritesFilter() {
+            filterCategory('Favorites');
+        }
+
+        function toggleFavorite(e, gameId) {
+            if (e) e.stopPropagation();
+            if (favorites.includes(gameId)) {
+                favorites = favorites.filter(id => id !== gameId);
+            } else {
+                favorites.push(gameId);
+            }
+            localStorage.setItem('vinilsplay_favs', JSON.stringify(favorites));
+            updateFavBadge();
+            applyFilterAndSearch();
+            if (activeGame && activeGame.id === gameId) updateCurrentLikeButton();
+        }
+
+        function updateFavBadge() {
+            document.getElementById('favCountBadge').textContent = favorites.length;
+        }
+
+        function openGame(gameId) {
+            const game = gamesList.find(g => g.id === gameId);
+            if (!game) return;
+
+            activeGame = game;
+
+            document.getElementById('overlayTitle').textContent = game.title;
+            document.getElementById('overlayCategory').textContent = `${game.category} • HTML5 Browser Game`;
+            document.getElementById('overlayBgIcon').className = `w-24 h-24 rounded-3xl bg-gradient-to-tr ${game.gradient || 'from-indigo-600 to-violet-500'} flex items-center justify-center text-white text-4xl shadow-2xl mb-5 animate-pulse`;
+
+            document.getElementById('gameTitleDisplay').textContent = game.title;
+            document.getElementById('gameCategoryDisplay').textContent = `${game.category} • Free Online Browser Game`;
+            document.getElementById('gameDescription').textContent = game.description || 'Enjoy playing this amazing browser game on VinilsPlay!';
+
+            const tagsContainer = document.getElementById('gameTagsContainer');
+            tagsContainer.innerHTML = `
+                <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">#${game.title.replace(/\s+/g, '')}</span>
+                <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">#HTML5</span>
+                <span class="px-3 py-1 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">#FreeToPlay</span>
+            `;
+
+            updateCurrentLikeButton();
+            renderRelatedGames(game.category, game.id);
+
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('gameView').classList.remove('hidden');
+            document.getElementById('gameOverlay').classList.remove('hidden');
+            document.getElementById('gameIframe').src = "about:blank";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function launchGameIframe() {
+            document.getElementById('gameOverlay').classList.add('hidden');
+            const iframe = document.getElementById('gameIframe');
+            
+            if (activeGame && activeGame.path) {
+                iframe.src = activeGame.path;
+            }
+        }
+
+        function goHome() {
+            document.getElementById('gameIframe').src = "about:blank";
+            document.getElementById('gameView').classList.add('hidden');
+            document.getElementById('homeView').classList.remove('hidden');
+            activeGame = null;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function updateCurrentLikeButton() {
+            if (!activeGame) return;
+            const isFav = favorites.includes(activeGame.id);
+            const icon = document.getElementById('likeIcon');
+            const text = document.getElementById('likeText');
+            
+            if (isFav) {
+                icon.className = "fa-solid fa-heart text-rose-500 text-base";
+                text.textContent = "Favorited";
+            } else {
+                icon.className = "fa-regular fa-heart text-rose-500 text-base";
+                text.textContent = "Favorite";
+            }
+        }
+
+        function toggleCurrentFavorite() {
+            if (activeGame) toggleFavorite(null, activeGame.id);
+        }
+
+        function renderRelatedGames(category, currentId) {
+            const grid = document.getElementById('relatedGamesGrid');
+            grid.innerHTML = '';
+
+            let related = gamesList.filter(g => g.id !== currentId && g.category === category);
+            if (related.length < 4) {
+                related = related.concat(gamesList.filter(g => g.id !== currentId && !related.includes(g))).slice(0, 4);
+            } else {
+                related = related.slice(0, 4);
+            }
+
+            related.forEach(game => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-3 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:shadow-lg transition-all cursor-pointer flex flex-col justify-between";
+                card.onclick = () => openGame(game.id);
+
+                const thumbHtml = game.thumbnail ? `<img src="${game.thumbnail}" class="absolute inset-0 w-full h-full object-cover" onerror="this.style.display='none'">` : `<i class="fa-solid ${game.icon || 'fa-gamepad'}"></i>`;
+
+                card.innerHTML = `
+                    <div class="w-full aspect-video rounded-xl bg-gradient-to-tr ${game.gradient || 'from-indigo-600 to-violet-800'} flex items-center justify-center text-white text-2xl mb-2 relative overflow-hidden">
+                        ${thumbHtml}
+                    </div>
+                    <h4 class="font-black text-xs text-slate-900 truncate mb-1">${game.title}</h4>
+                    <span class="text-[10px] text-slate-500 font-bold">${game.category}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleFullscreen() {
+            const elem = document.getElementById('gameContainerWrapper');
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().catch(() => {
+                    showNotice("Fullscreen request was blocked by browser permissions.");
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function shareGame() {
+            if (navigator.share) {
+                navigator.share({
+                    title: activeGame ? activeGame.title : 'VinilsPlay Arcade',
+                    url: window.location.href
+                }).catch(() => {});
+            } else {
+                showNotice("Game link copied to clipboard!");
+            }
+        }
+
+        function openAddGameModal() {
+            document.getElementById('addGameModal').classList.remove('hidden');
+        }
+
+        function closeAddGameModal() {
+            document.getElementById('addGameModal').classList.add('hidden');
+        }
+
+        function handleAddNewGame(e) {
+            e.preventDefault();
+            const title = document.getElementById('newGameTitle').value.trim();
+            const category = document.getElementById('newGameCategory').value;
+            const spanClass = document.getElementById('newGameSpan').value;
+            const path = document.getElementById('newGamePath').value.trim();
+            const thumbnail = document.getElementById('newGameThumb').value.trim();
+            const description = document.getElementById('newGameDesc').value.trim();
+
+            const newId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+            const newGame = {
+                id: newId,
+                title: title,
+                category: category,
+                badge: "NEW",
+                rating: 5.0,
+                plays: "100+",
+                spanClass: spanClass,
+                gradient: "from-indigo-600 to-violet-800",
+                icon: "fa-gamepad",
+                path: path,
+                thumbnail: thumbnail,
+                description: description || "Exciting new browser game added to VinilsPlay Arcade."
+            };
+
+            gamesList.unshift(newGame);
+            localStorage.setItem('vinilsplay_custom_games', JSON.stringify(gamesList));
+            renderPokiGrid(gamesList);
+            closeAddGameModal();
+            showNotice(`Successfully added "${title}" to your arcade!`);
+            e.target.reset();
+        }
+
+        function triggerAdsterraReward() {
+            showNotice("Adsterra Bonus Reward Triggered! In production, this opens your monetization direct link to generate high CPM earnings.");
+        }
+
+        function showNotice(msg) {
+            document.getElementById('modalMessage').textContent = msg;
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
